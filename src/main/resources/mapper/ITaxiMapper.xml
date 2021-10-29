@@ -1,7 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.cug.prototype.dao.ITaxiMapper">
-    <select id="queryAllTaxi" resultType="com.cug.prototype.entity.TaxiEntity">
+    <resultMap id="BaseTaxi" type="com.cug.prototype.entity.TaxiEntity">
+        <id column="TAXI_ID" property="TAXI_ID" />
+        <result column="VEHICLENUMBER" property="VEHICLENUMBER"/>
+        <result column="GPS_DATE" property="GPS_DATE"/>
+        <result column="MAP_LON" property="MAP_LON"/>
+        <result column="MAP_LAT" property="MAP_LAT"/>
+        <result column="DIRECTION" property="DIRECTION"/>
+        <result column="GPS_SPEED" property="GPS_SPEED"/>
+        <result column="EMPTY_LOAD" property="EMPTY_LOAD"/>
+    </resultMap>
+
+    <select id="queryAllTaxi" resultMap="BaseTaxi">
         select  * from taxi
     </select>
 </mapper>
