@@ -206,7 +206,7 @@
                 srsName: 'EPSG:4326',
                 featureNS: 'http://47.98.155.117/postgis',
                 featurePrefix: 'postgis',
-                featureTypes: ['postgis:taxi2'],
+                featureTypes: ['postgis:subtrip'],
                 outputFormat: 'application/json',
                 filter: ol.format.filter.intersects("geom", polygon)
 
@@ -256,7 +256,7 @@
                 srsName: 'EPSG:4326',
                 featureNS: 'http://47.98.155.117/postgis',
                 featurePrefix: 'postgis',
-                featureTypes: ['taxi2'],
+                featureTypes: ['subtrip'],
                 outputFormat: 'application/json',
                 filter: ol.format.filter.intersects("geom", evt.feature.getGeometry())
             });
@@ -302,7 +302,7 @@
                 srsName: 'EPSG:4326',
                 featureNS: 'http://47.98.155.117/postgis',
                 featurePrefix: 'postgis',
-                featureTypes: ['taxi2'],
+                featureTypes: ['subtrip'],
                 outputFormat: 'application/json',
                 filter: ol.format.filter.intersects("geom", polygon)
             });
@@ -406,7 +406,7 @@
             srsName: 'EPSG:4326',//坐标系统
             featureNS: 'http://47.98.155.117/postgis',//命名空间 URI
             featurePrefix: 'postgis',//工作区名称
-            featureTypes: ['taxi2'],//查询图层，可以是同一个工作区下多个图层，逗号隔开
+            featureTypes: ['subtrip'],//查询图层，可以是同一个工作区下多个图层，逗号隔开
             outputFormat: 'application/json',
             filter: ol.format.filter.intersects("geom", newPoly)//ol.format.filter.like("vehiclenum", "*"+vehiclenum+"*"),
         });
@@ -442,7 +442,7 @@
             srsName: 'EPSG:4326',//坐标系统
             featureNS: 'http://47.98.155.117/postgis',//命名空间 URI
             featurePrefix: 'postgis',//工作区名称
-            featureTypes: ['taxi2'],//查询图层，可以是同一个工作区下多个图层，逗号隔开
+            featureTypes: ['subtrip'],//查询图层，可以是同一个工作区下多个图层，逗号隔开
             outputFormat: 'application/json',
             filter: //ol.format.filter.like("gps_date", "*"+vehiclenum+"*"),
                 ol.format.filter.and(
@@ -492,7 +492,7 @@
             srsName: 'EPSG:4326',//坐标系统
             featureNS: 'http://47.98.155.117/postgis',//命名空间 URI
             featurePrefix: 'postgis',//工作区名称
-            featureTypes: ['taxi2'],//查询图层，可以是同一个工作区下多个图层，逗号隔开
+            featureTypes: ['subtrip'],//查询图层，可以是同一个工作区下多个图层，逗号隔开
             outputFormat: 'application/json',
             filter: //ol.format.filter.like("gps_date", "*"+vehiclenum+"*"),
                 ol.format.filter.and(
@@ -533,7 +533,7 @@
             srsName: 'EPSG:4326',//坐标系统
             featureNS: 'http://47.98.155.117/postgis',//命名空间 URI
             featurePrefix: 'postgis',//工作区名称
-            featureTypes: ['taxi2'],//查询图层，可以是同一个工作区下多个图层，逗号隔开
+            featureTypes: ['subtrip'],//查询图层，可以是同一个工作区下多个图层，逗号隔开
             outputFormat: 'application/json',
             filter: ol.format.filter.like("vehiclenum", "*"+vehiclenum+"*"),
         });
