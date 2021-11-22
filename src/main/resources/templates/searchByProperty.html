@@ -56,6 +56,10 @@
                     <label for="polygonSearch">圆形搜索</label>
                 </li>
                 <li>
+                    <input name="searchtype" value="rectangle" id="rectangleSearch"  type="radio">
+                    <label for="polygonSearch">矩形搜索</label>
+                </li>
+               <!-- <li>
                     <label>XMin</label>
                     <input value="114.11" class="landkey" type="text" id='xmin' placeholder="">
                 </li>
@@ -70,7 +74,7 @@
                 <li>
                     <label>YMax</label>
                     <input value="22.6" class="landkey" type="text" id='ymax' placeholder="">
-                </li>
+                </li>-->
                 <li>
                     <button onclick="searchByCor()">经纬度矩形查询</button>
                 </li>
@@ -122,11 +126,7 @@
     <!-- PAGE CONTENT ENDS -->
 
 </div><!-- /.row -->
-<style>
-    #popup {
-        background-color: #088;
-    }
-</style>
+
 <script>
 
     var drawInteraction;
@@ -147,7 +147,7 @@
         }),
         //边线颜色
         stroke: new ol.style.Stroke({
-            color: '#D2691E',
+            color: '#0000C6',
             width: 3
         }),
         //形状
@@ -164,6 +164,8 @@
     });
     $('input:radio[name="searchtype"]').change(function() {
         var checkValue = $('input:radio[name="searchtype"]:checked').val();
+
+
         //console.log(checkValue);
         if (checkValue == 'point') {
             searchPoint();
@@ -171,10 +173,56 @@
             searchPolygon();
         } else if (checkValue == 'circle') {
             searchCircle();
-        } else  {
-
+        } else if (checkValue == 'rectangle') {
+            searchRectangle();
         }
     });
+    function searchRectangle() {
+        if(draw){
+            map.removeInteraction(draw);
+        }
+        draw = new ol.interaction.Draw({
+            source: drawSource,
+            type: 'Circle',
+            freehand: false,
+            geometryFunction: ol.interaction.Draw.createBox()
+        });
+        map.addInteraction(draw);
+        draw.on('drawend', function (evt) {
+            if(drawVector.getKeys().length>0){
+                map.removeLayer(drawVector);
+                drawSource.clear();
+            }
+            var polygon = evt.feature.getGeometry()
+
+            var featureRequest = new ol.format.WFS().writeGetFeature({
+                srsName: 'EPSG:4326',
+                featureNS: 'http://47.98.155.117/postgis',
+                featurePrefix: 'postgis',
+                featureTypes: ['od'],
+                outputFormat: 'application/json',
+                filter: ol.format.filter.intersects("geom", polygon)
+            });
+            fetch('http://120.26.74.21:8080/geoserver/wfs', {
+                method: 'POST',
+                body: new XMLSerializer().serializeToString(featureRequest),
+                // mode: 'no-cors'
+            }).then(function(response) {
+                return response.json();
+            }).then(function(json) {
+                console.log(json);
+                var features = new ol.format.GeoJSON().readFeatures(json);
+                if(features.length == 0){
+                    alert('未查询到数据！')
+                }else{
+                    drawSource.addFeatures(features);
+                    map.addLayer(drawVector);
+                    map.getView().fit(drawSource.getExtent());
+                }
+            });
+
+        })
+    }
     function getRadius(){
         return $("#radius").val();
     }
@@ -251,7 +299,6 @@
                 drawSource.clear();
             }
             //alert("aaaa")
-            console.log("plg " + evt.feature.getGeometry())
             var featureRequest = new ol.format.WFS().writeGetFeature({
                 srsName: 'EPSG:4326',
                 featureNS: 'http://47.98.155.117/postgis',
@@ -399,9 +446,6 @@
             [xmax,ymax],
             [xmax,ymin],
             [xmin,ymin]]]);
-        //ol.geom.Polygon.fromCircle
-        // newPoly = newPoly.fromCircle()
-        //  newPoly.applyTransform(ol.proj.getTransform('EPSG:4326'))
         var featureRequest = new ol.format.WFS().writeGetFeature({
             srsName: 'EPSG:4326',//坐标系统
             featureNS: 'http://47.98.155.117/postgis',//命名空间 URI
